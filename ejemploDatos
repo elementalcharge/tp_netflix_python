@@ -1,0 +1,20 @@
+Ejemplo de estructura
+
+[ {Serie : 'Friends'
+   descSerie : 'Asd'
+   Temporada : [ { 'numeroTemporada : 1 ',
+                   'anoEmision' : '1991',
+                   'capitulos' : [ { 'numeroCapitulo' : '1',
+                                     'descCapitulo' : 'Asd',
+                                     'tituloCapitulo' : 'Asd',
+                                     'duracion' : '20',
+                                     'visualizaciones' : 0
+                                     }
+                                  ]
+                }
+               ]
+   }
+ ]
+ 
+ 
+ 
