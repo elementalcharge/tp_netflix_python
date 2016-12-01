@@ -1,25 +1,8 @@
-def topSeries(lista):
-	episodioauxiliar=[{ 'numeroCapitulo' : '1',
-                                     'descCapitulo' : 'Asd',
-                                     'tituloCapitulo' : 'Asd',
-                                     'duracion' : '20',
-                                     'visualizaciones' : 0,
-                                     'serie' : 'ninguna',
-                                     'Temporada': 0
-                                     } for i in range(0,5)]
-	for x in lista:
-		for y in range(0,len(x.Temporada)):
-			for z in range(0,len(x.Temporada[y][z])):
-				if x['temporada'][y]['capitulos'][z] > episodioauxiliar[4]['visualizaciones']:
-					episodioauxiliar[4]=x.Temporada[y].Capitulo[z]
-					sorted(episodioauxiliar,key=lambda k:k['visualizaciones'] ,reverse=True )
-	for x in episodioauxiliar:
-		print(x)
-		
 	
-def probabilidad(self):
-	import random
-	r=random.uniform(1,100)
+def probabilidad():
+	#genera la cantidad de visualizaciones que le pondra al video
+	
+	r=random.randint(1,101)
 	if(r>=60 and r<80):
 
 		return 1
@@ -37,7 +20,23 @@ def probabilidad(self):
 
 	elif(r>=99 and r<100):
 		return 150
+	else:
+	 return 0
+def topSeries(lista):
+	#listado de series mas vistas
+	auxiliar={ 'numeroCapitulo' : '1','descCapitulo' : 'Asd','tituloCapitulo' : 'Asd','duracion' : '20','visualizaciones' : 0}
+	episodioauxiliar=[auxiliar,auxiliar,auxiliar,auxiliar,auxiliar ]
+	for x in lista:
+		for y in x['Temporada']:
+			for z in y['Capitulos']:
+				if z['visualizaciones']>episodioauxiliar[4]['visualizaciones']:
+					episodioauxiliar[4]=z
+					sorted(episodioauxiliar,key=lambda k:k['visualizaciones'] ,reverse=True)
+	for x in episodioauxiliar:
+		print(x)
 	
+		
+		
 def inputUsuarioInt():
 	value=False
 	while value==False:
@@ -46,61 +45,44 @@ def inputUsuarioInt():
 
 		except ValueError:
 			print("valor no valido. ingreseun valor valido")
-			pass
 		else:
 			value=True
 	return leer
 	
-def generarVisuializaciones(self, directorio):
-		
-	max=inputUsuarioInt()
-	while max>0:
-		aux=directorio[random(0,len(directorio))]
-		aux2=aux.temporada[random(0,len(aux.temporada))]
-		aux3=aux2.capitulo[random(0,len(aux2.capitulo))]
+def generarVisuializaciones( directorio):
+	lim=inputUsuarioInt()
+	while lim>0:
+		r1=random.randint(0,len(directorio)-1)
+		print r1
+		r2=random.randint(0,len(directorio[r1]['Temporada'])-1)
+		print r2
+		r3=random.randint(0,len(directorio[r1]['Temporada'][r2]['capitulos'])-1)
+		print r3
+		aux=directorio[r1]['Temporada'][r2]['capitulos'][r3]
 		p=probabilidad()
-		max-=p
-		if(max>=0):
-			aux3.visualizaciones+=p
-		elif(max<0):
-			aux3.visualizaciones+=(max+p)
+		lim-=int(p)
+		if(lim<0):
+			aux['visualizaciones']=int(aux['visualizaciones'])+(lim+p)
+		else:
+			aux['visualizaciones']=int(aux['visualizaciones'])+p
 	
 def inputusuarioindex (self,array):
-
-		inrango = False
-
-		while inrango == False:
-
-			eleccion = inputUsuarioInt() 
-			if( eleccion < len(array) and eleccion>=0):
-				inrango=True
-			else:
-				print("ingrese un valor valido")
-		return eleccion
-
-def explorador (self,directorio):
-	for x in directorio(0,len(directorio)):
-		print("opcion {0} :").format(x)
-		directorio[x].Serie
-		
-	eserie=inputusuarioindex(directorio)
-	print (directorio[eserie].serie)
-
-	for y in range (0, len(directorio[eserie].Temporada)):
-		print ("opcion",y,"Temporada", directorio[eserie].Temporada[y].numeroTemporada)
-
-	etemporada= inputusuarioindex(directorio[eserie].Temporada)
-
-
-	for z in range (0,len(directorio[eserie].Temporada[etemporada].capitulos)):
-		print ("Capitulo", directorio[eserie].Temporada[etemporada].capitulos[z].numeroCapitulo)
-		print ("Capitulo", directorio[eserie].Temporada[etemporada].capitulos[z].tituloCapitulo)
-		print ("Capitulo", directorio[eserie].Temporada[etemporada].capitulos[z].visualizaciones)
+	inrango=False
+	while  inrango== False:
+		eleccion=inputUsuarioInt() 
+		if(eleccion <len(array) and eleccion>=0):
+			inrango=True
+		else:
+			print "ingrese un valor valido"
+	return eleccion
 
 
 		
 def main():
 	opcion=-1
+	import reader
+	x = reader.cargar_peliculas('series.txt')
+	print x
 
 	while opcion != 0:
 
@@ -110,14 +92,32 @@ def main():
 		print "0_salir"
 		opcion= inputUsuarioInt()
 		if opcion==1:
-			explorador()
+			explorador(x)
 		elif opcion==2:
-			generarVisuializaciones()
+			generarVisuializaciones(x)
 		elif opcion==3:
-			topSeries()
+			topSeries(x)
+
+def explorador (directorio):
+	for x in range(0,len(directorio)):
+		print ("opcion{0} : {1}").format(x,directorio[x]['Serie'])
+	
+	eserie=inputusuarioindex(directorio)
+	nombreSerie = directorio[eserie]['Serie']
+	print (nombreSerie)
+
+	for y in range (0, len(directorio[eserie]['Temporada'])):
+		print ("opcion",y,"Temporada", directorio[eserie]['Temporada'][y]['numeroTemporada'])
+
+	etemporada = inputusuarioindex(directorio[eserie]['Temporada'])
 
 
-		
+	for z in range (0,len(directorio[eserie]['Temporada'][etemporada]['capitulos'])):
+		print ("Capitulo", directorio[eserie]['Temporada'][etemporada]['capitulos'][z])
+		print ("Capitulo", directorio[eserie]['Temporada'][etemporada]['capitulos'][z]['tituloCapitulo'])
+		print ("Capitulo", directorio[eserie]['Temporada'][etemporada]['capitulos'][z]['visualizaciones'])
+
+
 
 
 
@@ -127,3 +127,4 @@ if __name__ == '__main__':
 	main()
 
 		
+	
