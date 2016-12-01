@@ -28,10 +28,10 @@ def topSeries(lista):
 	episodioauxiliar=[auxiliar,auxiliar,auxiliar,auxiliar,auxiliar ]
 	for x in lista:
 		for y in x['Temporada']:
-			for z in y['Capitulos']:
+			for z in y['capitulos']:
 				if z['visualizaciones']>episodioauxiliar[4]['visualizaciones']:
 					episodioauxiliar[4]=z
-					sorted(episodioauxiliar,key=lambda k:k['visualizaciones'] ,reverse=True)
+					episodioauxiliar=sorted(episodioauxiliar,key=lambda k:k['visualizaciones'] ,reverse=True)
 	for x in episodioauxiliar:
 		print(x)
 	
@@ -41,7 +41,7 @@ def inputUsuarioInt():
 	value=False
 	while value==False:
 		try:
-			leer=int(raw_input('ingrese visualizaciones a generar'))
+			leer=int(raw_input('ingrese numerovalido'))
 
 		except ValueError:
 			print("valor no valido. ingreseun valor valido")
@@ -50,14 +50,12 @@ def inputUsuarioInt():
 	return leer
 	
 def generarVisuializaciones( directorio):
+	print("ingrese el numero de visualizaciones a generar")
 	lim=inputUsuarioInt()
 	while lim>0:
 		r1=random.randint(0,len(directorio)-1)
-		print r1
 		r2=random.randint(0,len(directorio[r1]['Temporada'])-1)
-		print r2
 		r3=random.randint(0,len(directorio[r1]['Temporada'][r2]['capitulos'])-1)
-		print r3
 		aux=directorio[r1]['Temporada'][r2]['capitulos'][r3]
 		p=probabilidad()
 		lim-=int(p)
@@ -66,7 +64,7 @@ def generarVisuializaciones( directorio):
 		else:
 			aux['visualizaciones']=int(aux['visualizaciones'])+p
 	
-def inputusuarioindex (self,array):
+def inputusuarioindex (array):
 	inrango=False
 	while  inrango== False:
 		eleccion=inputUsuarioInt() 
@@ -81,8 +79,8 @@ def inputusuarioindex (self,array):
 def main():
 	opcion=-1
 	import reader
-	x = reader.cargar_peliculas('series.txt')
-	print x
+	listado = reader.cargar_peliculas('series.txt')
+	
 
 	while opcion != 0:
 
@@ -92,11 +90,11 @@ def main():
 		print "0_salir"
 		opcion= inputUsuarioInt()
 		if opcion==1:
-			explorador(x)
+			explorador(listado)
 		elif opcion==2:
-			generarVisuializaciones(x)
+			generarVisuializaciones(listado)
 		elif opcion==3:
-			topSeries(x)
+			topSeries(listado)
 
 def explorador (directorio):
 	for x in range(0,len(directorio)):
@@ -124,6 +122,7 @@ def explorador (directorio):
 
 
 if __name__ == '__main__':
+	import random
 	main()
 
 		
