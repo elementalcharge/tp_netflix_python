@@ -4,8 +4,10 @@ def cargar_peliculas(nombre_archivo):
 	def leer_archivo(archivo):
 		"""lee el archivo"""
 		from csv import reader
-
-		ads = reader(archivo)
+		try:
+			ads = reader(archivo)
+		except IOError:
+			pass
 		row = next(ads)
 		return row
 
@@ -44,5 +46,9 @@ def cargar_peliculas(nombre_archivo):
 	file.close()
 	return lSeries
 
-x = cargar_peliculas('series.txt')
-print x
+
+
+
+def crear_usuario(nombre,apellido):
+	return "%s, %s" % (nombre, apellido)
+
